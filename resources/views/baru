@@ -1,0 +1,96 @@
+merch
+<div class="container-show">
+    <!-- Menu atas -->
+
+    <h2 class="section-title">Merch</h2>
+
+    <div class="product-container">
+{{--         
+        <div class="product-item">
+            <img src="https://placebear.com/487/473" alt="LP Orange Clay">
+            <div class="product-info">
+                <h3>TURNSTILE "NEVER ENOUGH" LP ORANGE CLAY</h3>
+            </div>
+        </div>
+    
+        <!-- contoh sold out -->
+        <div class="product-item sold-out">
+            <span class="badge">Sold out</span>
+            <img src="https://placebear.com/400/400" alt="LP Snow">
+            <div class="product-info">
+                <h3>TURNSTILE "NEVER ENOUGH" LP SNOW</h3>
+                <p class="price">$30.00 USD</p>
+            </div>
+        </div> --}}
+
+        @forelse ($merchs as $merch)
+            <div class="product-item {{ $merch->sold ? 'sold-out' : '' }}">
+                @if ($merch->sold)
+                    <span class="badge">Sold out</span>
+                @endif
+
+                <!-- Carousel -->
+                <div id="carousel-{{ $merch->id }}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img 
+                                src="{{ asset('storage/img/' . $merch->image1) }}" 
+                                class="d-block w-100 rounded shadow-sm"
+                                alt="{{ $merch->nama }}"
+                                style="height: 250px; object-fit: cover;">
+                        </div>
+                        @if ($merch->image2)
+                        <div class="carousel-item">
+                            <img 
+                                src="{{ asset('storage/img/' . $merch->image2) }}" 
+                                class="d-block w-100 rounded shadow-sm"
+                                alt="{{ $merch->nama }}"
+                                style="height: 250px; object-fit: cover;">
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="product-info text-center mt-3">
+                    <h3 class="fw-bold">{{ strtoupper($merch->nama) }}</h3>
+                    <p class="text-muted">{{ $merch->lirisan }}</p>
+                </div>
+            </div>
+        @empty
+            <div class="text-center text-muted py-5">
+                <i class="bi bi-box-seam"></i> Belum ada merchandise tersedia.
+            </div>
+        @endforelse
+
+
+
+    </div>
+</div>
+
+
+<!-- MUSIK -->
+ <div class="releases-container">
+    <h2 class="section-title">Releases</h2>
+    
+    <div class="releases-grid">
+         @forelse ($musiks as $musik)
+            <a href="{{ $musik->link_direct }}" class="text-decoration-none">
+                <div class="release-item">
+                    <img 
+                        src="{{ asset('storage/img/' . $musik->cover) }}" 
+                        alt="{{ $musik->judul }}" 
+                        class="img-fluid rounded shadow-sm"
+                        style="object-fit: cover; width: 100%; height: 250px;">
+                    <p class="mt-2 text-center fw-semibold text-dark">
+                        {{ $musik->ciptaan }} — {{ $musik->judul }}
+                    </p>
+                </div>
+            </a>
+        @empty
+            <div class="text-muted text-center w-100 py-5">
+                <i class="bi bi-music-note-list"></i> Belum ada musik rilis.
+            </div>
+        @endforelse
+    </div>
+
+</div>
