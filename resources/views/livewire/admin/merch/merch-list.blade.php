@@ -45,6 +45,7 @@
                                     <th>Nama</th>
                                     <th>Rilisan</th>
                                     <th>Status</th>
+                                    <th>Link Shopee</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -95,6 +96,10 @@
                                             </div>
                                         </td>
 
+                                        <td class="text-truncate">
+                                            {{ $item->link_shopee }}
+                                        </td>
+
                                         <td>
                                             <a wire:navigate
                                                href="{{ route('admin.merch.edit', $item) }}"
@@ -111,7 +116,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center text-muted py-4">
+                                        <td colspan="7" class="text-center text-muted py-4">
                                             Belum ada data merch
                                         </td>
                                     </tr>

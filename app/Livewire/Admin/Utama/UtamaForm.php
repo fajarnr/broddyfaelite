@@ -14,10 +14,11 @@ class UtamaForm extends Component
 
     public $foto1, $foto2, $foto3, $foto4, $foto5, $foto6;
     public $existingFoto1, $existingFoto2, $existingFoto3, $existingFoto4, $existingFoto5, $existingFoto6;
-    public $fotoId = null;
+    public $fotoId;
     public $mode = 'create';
+    public ?Utama $utama = null;
 
-    public function mount(?Utama $utama = null)
+    public function mount(Utama $utama = null): void
     {
         if ($utama && $utama->exists) {
             $this->fotoId = $utama->id;
@@ -27,27 +28,36 @@ class UtamaForm extends Component
             }
 
             $this->mode = 'edit';
+        } else {
+            $this->mode = 'create';
         }
     }
 
-    public function save()
+    public function save(): void
     {
         $rules = [];
         for ($i = 1; $i <= 6; $i++) {
             $rules['foto' . $i] = 'nullable|image|mimes:png,jpg,jpeg|max:5120';
         }
+
         $this->validate($rules);
 
-        $this->mode === 'create' ? $this->createUtama() : $this->updateUtama();
+        if ($this->mode === 'edit') {
+            $this->updateUtama();
+        } else {
+            $this->createUtama();
+        }
     }
 
     /** CREATE **/
-    private function createUtama()
+    private function createUtama(): void
     {
         try {
             $data = [];
-            for ($i = 1; $i <= 6; $i++) {
+
+            foreach (range(1, 6) as $i) {
                 $fotoField = 'foto' . $i;
+
                 if ($this->$fotoField) {
                     $random = rand(10000, 99999);
                     $filename = "Utama_{$i}_{$random}." . $this->$fotoField->getClientOriginalExtension();
@@ -59,65 +69,83 @@ class UtamaForm extends Component
             }
 
             Utama::create($data);
-
             $this->resetForm();
-            $this->dispatch('utama-created');
+
+            // ✅ Notifikasi sukses & redirect
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'message' => 'Data berhasil disimpan!',
+                'redirect' => route('admin.utama.index'),
+            ]);
         } catch (\Exception $e) {
-            $this->dispatch('failed-create-utama', message: $e->getMessage());
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'Gagal menyimpan data: ' . $e->getMessage(),
+            ]);
         }
     }
 
     /** UPDATE **/
-    private function updateUtama()
+    private function updateUtama(): void
     {
         try {
             $foto = Utama::findOrFail($this->fotoId);
             $data = [];
 
-            for ($i = 1; $i <= 6; $i++) {
+            foreach (range(1, 6) as $i) {
                 $fotoField = 'foto' . $i;
                 $existingField = 'existingFoto' . $i;
 
                 if ($this->$fotoField && is_object($this->$fotoField)) {
-                    // Hapus file lama jika ada
+                    // hapus file lama
                     if (!empty($this->$existingField) && Storage::disk('public')->exists('img/' . $this->$existingField)) {
                         Storage::disk('public')->delete('img/' . $this->$existingField);
                     }
 
-                    // Simpan file baru
+                    // simpan file baru
                     $random = rand(10000, 99999);
                     $filename = "Utama_{$i}_{$random}." . $this->$fotoField->getClientOriginalExtension();
                     $this->$fotoField->storeAs('img/', $filename, 'public');
                     $data[$fotoField] = $filename;
                 } else {
-                    // Tetap gunakan file lama
                     $data[$fotoField] = $this->$existingField;
                 }
             }
 
             $foto->update($data);
-
             $this->resetForm();
-            $this->dispatch('utama-updated');
+
+            // ✅ Notifikasi sukses & redirect
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'message' => 'Data berhasil diperbarui!',
+                'redirect' => route('admin.utama.index'),
+            ]);
         } catch (\Exception $e) {
-            $this->dispatch('failed-update-utama', message: $e->getMessage());
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'Gagal memperbarui data: ' . $e->getMessage(),
+            ]);
         }
     }
 
-    /** RESET FORM **/
-    private function resetForm()
+    private function resetForm(): void
     {
-        for ($i = 1; $i <= 6; $i++) {
+        foreach (range(1, 6) as $i) {
             $this->{'foto' . $i} = null;
             $this->{'existingFoto' . $i} = null;
         }
+
         $this->fotoId = null;
+        $this->utama = null;
         $this->mode = 'create';
     }
 
     #[Layout('layout.auth')]
     public function render()
     {
-        return view('livewire.admin.utama.utama-form');
+        return view('livewire.admin.utama.utama-form', [
+            'mode' => $this->mode,
+        ]);
     }
 }

@@ -56,9 +56,17 @@ class LogoForm extends Component
             ]);
 
             $this->resetForm();
-            $this->dispatch('logo-created');
+            // ✅ kirim event sukses + redirect
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'message' => 'Data Info berhasil disimpan!',
+                'redirect' => route('admin.logo.index'),
+            ]);
         } catch (\Exception $e) {
-            $this->dispatch('failed-create-logo', message: $e->getMessage());
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'Gagal menyimpan data: ' . $e->getMessage(),
+            ]);
         }
     }
 
@@ -84,9 +92,17 @@ class LogoForm extends Component
             }
 
             $this->resetForm();
-            $this->dispatch('logo-updated');
+            // ✅ Notifikasi sukses & redirect
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'message' => 'Data berhasil diperbarui!',
+                'redirect' => route('admin.logo.index'),
+            ]);
         } catch (\Exception $e) {
-            $this->dispatch('failed-update-logo', message: $e->getMessage());
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'Gagal memperbarui data: ' . $e->getMessage(),
+            ]);
         }
     }
 

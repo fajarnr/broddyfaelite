@@ -17,5 +17,9 @@ class Info extends Model
         'email_label',
         'email_booking',
         'nomor_booking',
+        'youtube',
+        'spotify',
+        'itunes',
+        'instagram',
     ];
 }

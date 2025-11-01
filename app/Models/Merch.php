@@ -16,5 +16,6 @@ class Merch extends Model
         'image1',
         'image2',
         'sold',
+        'link_shopee',
     ];
 }

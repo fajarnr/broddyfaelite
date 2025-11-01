@@ -60,7 +60,7 @@
                                                     <img src="{{ asset('storage/img/' . $utama->$foto) }}"
                                                         alt="Foto {{ $i }}"
                                                         class="img-thumbnail shadow-sm zoomable"
-                                                        style="width: 100px; height: 60px; object-fit: cover; cursor: pointer;"
+                                                        style="width: 100px; height: 200px; object-fit: cover; cursor: pointer;"
                                                         data-src="{{ asset('storage/img/' . $utama->$foto) }}">
                                                 @else
                                                     <span class="badge bg-secondary">Kosong</span>

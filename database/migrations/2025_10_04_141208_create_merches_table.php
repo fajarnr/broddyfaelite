@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('image1');
             $table->string('image2');
             $table->boolean('sold')->default(false);
+            $table->string('link_shopee');
             $table->timestamps();
         });
     }

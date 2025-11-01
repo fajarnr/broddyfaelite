@@ -29,12 +29,6 @@
     <!-- JSVectorMap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css">
 
-    @livewireScripts
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('adminlte/dist/js/delete.js') }}"></script>
-    <script src="{{ asset('adminlte/dist/js/all.js') }}"></script>
-
-
     @livewireStyles
 </head>
 <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
@@ -54,12 +48,12 @@
         All rights reserved.
     </footer>
 
-    @livewireScripts
-
     <!-- Vendor JS -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"></script>
+
+    <!-- AdminLTE Core -->
     <script src="{{ asset('adminlte/dist/js/adminlte.js') }}"></script>
 
     <!-- Plugins -->
@@ -68,61 +62,96 @@
     <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"></script>
 
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/livewire-alert.js') }}"></script>
+
+
+    <!-- Custom delete.js (pastikan file ini ada) -->
+    <script src="{{ asset('adminlte/dist/js/delete.js') }}"></script>
+
+    @livewireScripts
+
+    <!-- FIX: hindari multiple instance Livewire/Alpine -->
+    <script>
+        window.Livewire = window.Livewire || {};
+        document.addEventListener('livewire:load', () => {
+            if (window.Alpine && window.Alpine.version) {
+                console.log('Alpine already loaded by Livewire.');
+            }
+        });
+    </script>
+
+    <!-- FIX: Error push-menu.ts (getComputedStyle on Window) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            try {
+                const sidebar = document.querySelector(".app-sidebar, .main-sidebar");
+                if (!sidebar) {
+                    console.warn("Sidebar not found — disabling PushMenu init.");
+                    window.AdminLTE = window.AdminLTE || {};
+                    window.AdminLTE.PushMenu = function() {};
+                }
+            } catch (e) {
+                console.warn("PushMenu init skipped:", e);
+            }
+        });
+    </script>
+
     <!-- Init Scripts -->
     <script>
-    function initDashboard() {
-        // Sortable
-        const sortableEl = document.querySelector('.connectedSortable');
-        if (sortableEl) {
-            new Sortable(sortableEl, {
-                group: 'shared',
-                handle: '.card-header'
-            });
+        function initDashboard() {
+            // Sortable
+            const sortableEl = document.querySelector('.connectedSortable');
+            if (sortableEl) {
+                new Sortable(sortableEl, {
+                    group: 'shared',
+                    handle: '.card-header'
+                });
 
-            sortableEl.querySelectorAll('.card-header').forEach(header => {
-                header.style.cursor = 'move';
-            });
+                sortableEl.querySelectorAll('.card-header').forEach(header => {
+                    header.style.cursor = 'move';
+                });
+            }
+
+            // ApexCharts
+            const chartEl = document.querySelector('#revenue-chart');
+            if (chartEl) {
+                const options = {
+                    series: [
+                        { name: 'Digital Goods', data: [28, 48, 40, 19, 86, 27, 90] },
+                        { name: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40] }
+                    ],
+                    chart: { height: 300, type: 'area', toolbar: { show: false } },
+                    legend: { show: false },
+                    colors: ['#0d6efd', '#20c997'],
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'smooth' },
+                    xaxis: {
+                        type: 'datetime',
+                        categories: [
+                            '2023-01-01','2023-02-01','2023-03-01',
+                            '2023-04-01','2023-05-01','2023-06-01','2023-07-01'
+                        ]
+                    },
+                    tooltip: { x: { format: 'MMMM yyyy' } }
+                };
+                new ApexCharts(chartEl, options).render();
+            }
+
+            // jsVectorMap
+            const mapEl = document.getElementById("world-map");
+            if (mapEl) {
+                new jsVectorMap({
+                    selector: "#world-map",
+                    map: "world",
+                });
+            }
         }
 
-        // ApexCharts
-        const chartEl = document.querySelector('#revenue-chart');
-        if (chartEl) {
-            const options = {
-                series: [
-                    { name: 'Digital Goods', data: [28, 48, 40, 19, 86, 27, 90] },
-                    { name: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40] }
-                ],
-                chart: { height: 300, type: 'area', toolbar: { show: false } },
-                legend: { show: false },
-                colors: ['#0d6efd', '#20c997'],
-                dataLabels: { enabled: false },
-                stroke: { curve: 'smooth' },
-                xaxis: {
-                    type: 'datetime',
-                    categories: [
-                        '2023-01-01','2023-02-01','2023-03-01',
-                        '2023-04-01','2023-05-01','2023-06-01','2023-07-01'
-                    ]
-                },
-                tooltip: { x: { format: 'MMMM yyyy' } }
-            };
-            new ApexCharts(chartEl, options).render();
-        }
-
-        // jsVectorMap
-        const mapEl = document.getElementById("world-map");
-        if (mapEl) {
-            new jsVectorMap({
-                selector: "#world-map",
-                map: "world",
-            });
-        }
-    }
-
-    // Run first load + Livewire update
-    document.addEventListener("DOMContentLoaded", initDashboard);
-    document.addEventListener("livewire:load", initDashboard);
-    document.addEventListener("livewire:navigated", initDashboard);
+        document.addEventListener("DOMContentLoaded", initDashboard);
+        document.addEventListener("livewire:load", initDashboard);
+        document.addEventListener("livewire:navigated", initDashboard);
     </script>
 
     @stack('scripts')

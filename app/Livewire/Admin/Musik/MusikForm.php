@@ -19,6 +19,8 @@ class MusikForm extends Component
     public $judul = '';
     public $ciptaan = '';
     public $link_direct = '';
+    public $link_spotify = '';
+    public $link_itunes = '';
 
     public $mode = 'create';
 
@@ -30,6 +32,8 @@ class MusikForm extends Component
             $this->judul        = $musik->judul;
             $this->ciptaan      = $musik->ciptaan;
             $this->link_direct  = $musik->link_direct;
+            $this->link_spotify  = $musik->link_spotify;
+            $this->link_itunes  = $musik->link_itunes;
             $this->mode         = 'edit';
         }
     }
@@ -39,7 +43,9 @@ class MusikForm extends Component
         $rules = [
             'judul'       => 'required|string|max:255',
             'ciptaan'     => 'required|string|max:255',
-            'link_direct' => 'required|url',
+            'link_direct' => 'nullable|url',
+            'link_spotify' => 'nullable|url',
+            'link_itunes' => 'nullable|url',
         ];
 
         if ($this->mode === 'create') {
@@ -68,6 +74,8 @@ class MusikForm extends Component
                 'judul'       => $this->judul,
                 'ciptaan'     => $this->ciptaan,
                 'link_direct' => $this->link_direct,
+                'link_spotify' => $this->link_spotify,
+                'link_itunes' => $this->link_itunes,
             ]);
 
             $this->resetForm();
@@ -84,6 +92,8 @@ class MusikForm extends Component
                 'judul'       => $this->judul,
                 'ciptaan'     => $this->ciptaan,
                 'link_direct' => $this->link_direct,
+                'link_spotify' => $this->link_spotify,
+                'link_itunes' => $this->link_itunes,
             ];
 
             if ($this->cover && is_object($this->cover)) {
@@ -115,6 +125,8 @@ class MusikForm extends Component
         $this->judul       = '';
         $this->ciptaan     = '';
         $this->link_direct = '';
+        $this->link_spotify = '';
+        $this->link_itunes = '';
     }
 
     #[Layout('layout.auth')]

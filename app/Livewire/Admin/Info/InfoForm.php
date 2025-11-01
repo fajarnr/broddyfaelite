@@ -22,6 +22,10 @@ class InfoForm extends Component
     public $email_label = '';
     public $email_booking = '';
     public $nomor_booking = '';
+    public $spotify = '';
+    public $youtube = '';
+    public $itunes = '';
+    public $instagram = '';
 
     public $mode = 'create';
 
@@ -35,6 +39,10 @@ class InfoForm extends Component
             $this->email_label   = $info->email_label;
             $this->email_booking = $info->email_booking;
             $this->nomor_booking = $info->nomor_booking;
+            $this->spotify = $info->spotify;
+            $this->youtube = $info->youtube;
+            $this->itunes = $info->itunes;
+            $this->instagram = $info->instagram;
             $this->mode          = 'edit';
         }
     }
@@ -43,10 +51,14 @@ class InfoForm extends Component
     {
         $rules = [
             'deskripsi'     => 'required|string',
-            'email_bisnis'  => 'required|email',
-            'email_label'   => 'required|email',
-            'email_booking' => 'required|email',
-            'nomor_booking' => 'required|string|max:20',
+            'email_bisnis'  => 'nullable|email',
+            'email_label'   => 'nullable|email',
+            'email_booking' => 'nullable|email',
+            'nomor_booking' => 'nullable|string|max:20',
+            'spotify' => 'nullable|url',
+            'instagram' => 'nullable|url',
+            'youtube' => 'nullable|url',
+            'itunes' => 'nullable|url',
         ];
 
         if ($this->mode === 'create') {
@@ -77,14 +89,25 @@ class InfoForm extends Component
                 'email_label'   => $this->email_label,
                 'email_booking' => $this->email_booking,
                 'nomor_booking' => $this->nomor_booking,
+                'youtube' => $this->youtube,
+                'itunes' => $this->itunes,
+                'spotify' => $this->spotify,
+                'instagram' => $this->instagram,
             ]);
 
             $this->resetForm();
 
-            // panggil SweetAlert via JS
-            $this->dispatch('info-created');
+             // ✅ kirim event sukses + redirect
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'message' => 'Data Info berhasil disimpan!',
+                'redirect' => route('admin.info.index'),
+            ]);
         } catch (\Exception $e) {
-            $this->dispatch('failed-create-info', message: $e->getMessage());
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'Gagal menyimpan data: ' . $e->getMessage(),
+            ]);
         }
     }
 
@@ -97,6 +120,10 @@ class InfoForm extends Component
                 'email_label'   => $this->email_label,
                 'email_booking' => $this->email_booking,
                 'nomor_booking' => $this->nomor_booking,
+                'youtube' => $this->youtube,
+                'itunes' => $this->itunes,
+                'spotify' => $this->spotify,
+                'instagram' => $this->instagram,
             ];
 
             if ($this->image && is_object($this->image)) {
@@ -117,9 +144,17 @@ class InfoForm extends Component
 
             $this->resetForm();
 
-            $this->dispatch('info-updated');
+            // ✅ kirim event sukses + redirect
+            $this->dispatch('notify', [
+                'type' => 'success',
+                'message' => 'Data Info berhasil diperbarui!',
+                'redirect' => route('admin.info.index'),
+            ]);
         } catch (\Exception $e) {
-            $this->dispatch('failed-update-info', message: $e->getMessage());
+            $this->dispatch('notify', [
+                'type' => 'error',
+                'message' => 'Gagal memperbarui data: ' . $e->getMessage(),
+            ]);
         }
     }
 
@@ -131,6 +166,10 @@ class InfoForm extends Component
         $this->email_label   = '';
         $this->email_booking = '';
         $this->nomor_booking = '';
+        $this->instagram = '';
+        $this->itunes = '';
+        $this->youtube = '';
+        $this->spotify = '';
     }
 
     #[Layout('layout.auth')]

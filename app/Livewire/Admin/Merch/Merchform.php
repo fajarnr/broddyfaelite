@@ -21,6 +21,7 @@ class MerchForm extends Component
     public $existingImage2 = null;
     public $nama = '';
     public $rilisan = '';
+    public $link_shopee = '';
     public $sold = false;
 
     public $mode = 'create';
@@ -34,6 +35,7 @@ class MerchForm extends Component
             $this->nama           = $merch->nama;
             $this->rilisan        = $merch->rilisan;
             $this->sold           = $merch->sold;
+            $this->link_shopee    = $merch->link_shopee;
             $this->mode           = 'edit';
         }
     }
@@ -44,6 +46,7 @@ class MerchForm extends Component
             'nama'    => 'required|string|max:255',
             'rilisan' => 'required|string|max:255',
             'sold'    => 'boolean',
+            'link_shopee'    => 'nullable|url',
         ];
 
         if ($this->mode === 'create') {
@@ -78,6 +81,7 @@ class MerchForm extends Component
                 'nama'    => $this->nama,
                 'rilisan' => $this->rilisan,
                 'sold'    => $this->sold,
+                'link_shopee'  => $this->link_shopee,
             ]);
 
             $this->resetForm();
@@ -94,6 +98,7 @@ class MerchForm extends Component
                 'nama'    => $this->nama,
                 'rilisan' => $this->rilisan,
                 'sold'    => $this->sold,
+                'link_shopee'  => $this->link_shopee,
             ];
 
             // Image 1
@@ -139,6 +144,7 @@ class MerchForm extends Component
         $this->image2  = null;
         $this->nama    = '';
         $this->rilisan = '';
+        $this->link_shopee = '';
         $this->sold    = false;
     }
 

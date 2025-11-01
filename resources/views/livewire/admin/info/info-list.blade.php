@@ -45,6 +45,10 @@
                                     <th>Email Label</th>
                                     <th>Email Booking</th>
                                     <th>Nomor Booking</th>
+                                    <th>Youtube</th>
+                                    <th>iTunes</th>
+                                    <th>Spotify</th>
+                                    <th>Instagram</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -69,6 +73,10 @@
                                         <td class="text-nowrap">{{ $item->email_label ?? '-' }}</td>
                                         <td class="text-nowrap">{{ $item->email_booking ?? '-' }}</td>
                                         <td class="text-nowrap">{{ $item->nomor_booking ?? '-' }}</td>
+                                        <td class="text-nowrap">{{ $item->youtube ?? '-' }}</td>
+                                        <td class="text-nowrap">{{ $item->itunes ?? '-' }}</td>
+                                        <td class="text-nowrap">{{ $item->spotify ?? '-' }}</td>
+                                        <td class="text-nowrap">{{ $item->instagram ?? '-' }}</td>
                                         <td>
                                             <a wire:navigate
                                                href="{{ route('admin.info.edit', $item) }}"
@@ -85,7 +93,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center text-muted py-4">
+                                        <td colspan="11" class="text-center text-muted py-4">
                                             Belum ada data info
                                         </td>
                                     </tr>

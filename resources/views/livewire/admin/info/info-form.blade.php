@@ -27,91 +27,132 @@
                 <form wire:submit.prevent="save" enctype="multipart/form-data">
                     <div class="card-body">
                         <!-- Upload Foto dengan Preview -->
-                        <div class="mb-3 row align-items-center">
-                            <div class="col-md-4">
-                                <label for="image" class="form-label">Upload Gambar</label>
-                                <input wire:model="image" type="file" class="form-control" id="image">
-                                @error('image') 
-                                    <small class="text-danger">{{ $message }}</small> 
-                                @enderror
+                    <div class="mb-3 row align-items-center">
+                        <div class="col-md-4">
+                            <label for="image" class="form-label">Upload Gambar</label>
+                            <input wire:model="image" type="file" class="form-control" id="image">
+                            @error('image') 
+                                <small class="text-danger">{{ $message }}</small> 
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4 d-flex justify-content-start align-items-center">
+                            @if ($image)
+                                {{-- Preview gambar baru yang diupload --}}
+                                <div class="border rounded p-2 bg-light">
+                                    <img src="{{ $image->temporaryUrl() }}" 
+                                        alt="Preview Baru" 
+                                        class="img-thumbnail" 
+                                        style="max-width: 200px; max-height: 200px; object-fit: cover;">
+                                </div>
+                            @elseif ($existingImage)
+                                {{-- Preview gambar lama dari database --}}
+                                <div class="border rounded p-2 bg-light">
+                                    <img src="{{ asset('storage/img/' . $existingImage) }}" 
+                                        alt="Preview Lama" 
+                                        class="img-thumbnail" 
+                                        style="max-width: 200px; max-height: 200px; object-fit: cover;">
+                                </div>
+                            @else
+                                {{-- Kalau tidak ada gambar sama sekali --}}
+                                <div class="text-muted fst-italic">Belum ada gambar dipilih</div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Deskripsi -->
+                    <div class="mb-3">
+                        <label for="deskripsi" class="form-label">Deskripsi</label>
+                        <textarea wire:model.defer="deskripsi"
+                                id="deskripsi"
+                                class="form-control"
+                                rows="3"
+                                placeholder="Masukkan deskripsi info..."></textarea>
+                        @error('deskripsi') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+
+                    <!-- Email Bisnis -->
+                    <div class="mb-3">
+                        <label for="email_bisnis" class="form-label">Email Bisnis</label>
+                        <input wire:model.defer="email_bisnis"
+                            type="email"
+                            class="form-control"
+                            id="email_bisnis"
+                            placeholder="contoh@bisnis.com">
+                        @error('email_bisnis') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+
+                    <!-- Email Label -->
+                    <div class="mb-3">
+                        <label for="email_label" class="form-label">Email Label</label>
+                        <input wire:model.defer="email_label"
+                            type="email"
+                            class="form-control"
+                            id="email_label"
+                            placeholder="contoh@label.com">
+                        @error('email_label') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+
+                    <!-- Email Booking -->
+                    <div class="mb-3">
+                        <label for="email_booking" class="form-label">Email Booking</label>
+                        <input wire:model.defer="email_booking"
+                            type="email"
+                            class="form-control"
+                            id="email_booking"
+                            placeholder="contoh@booking.com">
+                        @error('email_booking') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+
+                    <!-- Nomor Booking -->
+                    <div class="mb-3">
+                        <label for="nomor_booking" class="form-label">Nomor Booking</label>
+                        <input wire:model.defer="nomor_booking"
+                            type="text"
+                            class="form-control"
+                            id="nomor_booking"
+                            placeholder="0812xxxxxxx">
+                        @error('nomor_booking') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+
+                    <!-- ============================ -->
+                    <!-- 🌐 Link Media Sosial -->
+                    <!-- ============================ -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Link Media Sosial</label>
+
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <input wire:model.defer="instagram"
+                                    type="url"
+                                    class="form-control"
+                                    placeholder="https://instagram.com/username">
+                                @error('instagram') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
-                            <div class="col-md-4 d-flex justify-content-start align-items-center">
-                                @if ($image)
-                                    {{-- Preview gambar baru yang diupload --}}
-                                    <div class="border rounded p-2 bg-light">
-                                        <img src="{{ $image->temporaryUrl() }}" 
-                                             alt="Preview Baru" 
-                                             class="img-thumbnail" 
-                                             style="max-width: 200px; max-height: 200px; object-fit: cover;">
-                                    </div>
-                                @elseif ($existingImage)
-                                    {{-- Preview gambar lama dari database --}}
-                                    <div class="border rounded p-2 bg-light">
-                                        <img src="{{ asset('storage/img/' . $existingImage) }}" 
-                                             alt="Preview Lama" 
-                                             class="img-thumbnail" 
-                                             style="max-width: 200px; max-height: 200px; object-fit: cover;">
-                                    </div>
-                                @else
-                                    {{-- Kalau tidak ada gambar sama sekali --}}
-                                    <div class="text-muted fst-italic">Belum ada gambar dipilih</div>
-                                @endif
+
+                            <div class="col-md-6">
+                                <input wire:model.defer="spotify"
+                                    type="url"
+                                    class="form-control"
+                                    placeholder="https://open.spotify.com/artist/...">
+                                @error('spotify') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
-                        </div>
 
-                        <!-- Deskripsi -->
-                        <div class="mb-3">
-                            <label for="deskripsi" class="form-label">Deskripsi</label>
-                            <textarea wire:model.defer="deskripsi"
-                                      id="deskripsi"
-                                      class="form-control"
-                                      rows="3"
-                                      placeholder="Masukkan deskripsi info..."></textarea>
-                            @error('deskripsi') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
+                            <div class="col-md-6">
+                                <input wire:model.defer="itunes"
+                                    type="url"
+                                    class="form-control"
+                                    placeholder="https://music.apple.com/...">
+                                @error('itunes') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
 
-                        <!-- Email Bisnis -->
-                        <div class="mb-3">
-                            <label for="email_bisnis" class="form-label">Email Bisnis</label>
-                            <input wire:model.defer="email_bisnis"
-                                   type="email"
-                                   class="form-control"
-                                   id="email_bisnis"
-                                   placeholder="contoh@bisnis.com">
-                            @error('email_bisnis') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-
-                        <!-- Email Label -->
-                        <div class="mb-3">
-                            <label for="email_label" class="form-label">Email Label</label>
-                            <input wire:model.defer="email_label"
-                                   type="email"
-                                   class="form-control"
-                                   id="email_label"
-                                   placeholder="contoh@label.com">
-                            @error('email_label') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-
-                        <!-- Email Booking -->
-                        <div class="mb-3">
-                            <label for="email_booking" class="form-label">Email Booking</label>
-                            <input wire:model.defer="email_booking"
-                                   type="email"
-                                   class="form-control"
-                                   id="email_booking"
-                                   placeholder="contoh@booking.com">
-                            @error('email_booking') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-
-                        <!-- Nomor Booking -->
-                        <div class="mb-3">
-                            <label for="nomor_booking" class="form-label">Nomor Booking</label>
-                            <input wire:model.defer="nomor_booking"
-                                   type="text"
-                                   class="form-control"
-                                   id="nomor_booking"
-                                   placeholder="0812xxxxxxx">
-                            @error('nomor_booking') <small class="text-danger">{{ $message }}</small> @enderror
+                            <div class="col-md-6">
+                                <input wire:model.defer="youtube"
+                                    type="url"
+                                    class="form-control"
+                                    placeholder="https://youtube.com/...">
+                                @error('youtube') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
                         </div>
                     </div>
 

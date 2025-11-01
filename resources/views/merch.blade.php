@@ -34,7 +34,7 @@
                         </div>
 
                         @if ($merch->image2)
-                            <!-- Optional: carousel control buttons -->
+                            <!-- Carousel control buttons -->
                             <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ $merch->id }}" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
@@ -50,7 +50,16 @@
                 <!-- Product Info -->
                 <div class="card-body-merch text-center">
                     <h5 class="fw-bold text-uppercase mb-2">{{ $merch->nama }}</h5>
-                    <p class="text-muted small mb-0">{{ $merch->lirisan }}</p>
+                    <p class="text-muted small mb-3">{{ $merch->rilisan }}</p>
+
+                    <!-- ✅ Tampilkan tombol Shopee hanya jika ada -->
+                    @if (!empty($merch->link_shopee))
+                        <a href="{{ $merch->link_shopee }}" 
+                        target="_blank" 
+                        class="btn btn-outline-success btn-sm rounded-pill d-inline-flex align-items-center gap-1 px-3">
+                            <i class="bi bi-bag-check-fill"></i> Shopee
+                        </a>
+                    @endif
                 </div>
             </div>
         @empty

@@ -25,7 +25,7 @@
             <p class="fst-italic text-secondary mb-4">
                 {{ $collab->deskripsi }}
             </p>
-            <p class="fw-semibold text-dark">Welcome, Lucien ❤️</p>
+            <p class="fw-semibold text-dark">Welcome, Broddy ❤️</p>
         </div>
 
          <div class="collab-gallery container d-flex flex-column align-items-center gap-4 mt-5">

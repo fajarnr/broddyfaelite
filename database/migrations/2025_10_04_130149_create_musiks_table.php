@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('cover');
             $table->string('link_direct');
             $table->string('ciptaan');
+            $table->string('link_spotify');
+            $table->string('link_itunes');
             $table->timestamps();
         });
     }

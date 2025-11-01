@@ -35,6 +35,7 @@
                                     <small class="text-danger">{{ $message }}</small> 
                                 @enderror
                             </div>
+
                             <div class="col-md-4 d-flex justify-content-start align-items-center">
                                 @if ($cover)
                                     {{-- Preview gambar baru --}}
@@ -89,6 +90,28 @@
                                 id="link_direct"
                                 placeholder="https://contoh.com">
                             @error('link_direct') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+
+                        <!-- Link Spotify -->
+                        <div class="mb-3">
+                            <label for="link_spotify" class="form-label">Link Spotify</label>
+                            <input wire:model.defer="link_spotify"
+                                type="url"
+                                class="form-control"
+                                id="link_spotify"
+                                placeholder="https://open.spotify.com/track/...">
+                            @error('link_spotify') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+
+                        <!-- Link iTunes -->
+                        <div class="mb-3">
+                            <label for="link_itunes" class="form-label">Link iTunes / Apple Music</label>
+                            <input wire:model.defer="link_itunes"
+                                type="url"
+                                class="form-control"
+                                id="link_itunes"
+                                placeholder="https://music.apple.com/...">
+                            @error('link_itunes') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
 

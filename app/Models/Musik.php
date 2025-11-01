@@ -15,5 +15,7 @@ class Musik extends Model
         'judul',
         'ciptaan',
         'cover',
+        'link_spotify',
+        'link_itunes',
     ];
 }

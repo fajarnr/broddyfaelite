@@ -36,8 +36,28 @@
         
             <!-- CONTACT SECTION -->
             <div id="contact" class="contact-links">
+                {{-- <p class="text-center">
+                    <strong>Instagram / Spotify / iTunes / Youtube</strong>
+                </p> --}}
                 <p>
-                    <strong>Instagram / Facebook / Soundcloud / Resident Advisor / Discogs</strong>
+                    @if(!empty($info->instagram))
+                        <a href="{{ $info->instagram }}" target="_blank"><strong>Instagram</strong></a>
+                    @endif
+
+                    @if(!empty($info->spotify))
+                        @if(!empty($info->instagram)) / @endif
+                        <a href="{{ $info->spotify }}" target="_blank"><strong>Spotify</strong></a>
+                    @endif
+
+                    @if(!empty($info->itunes))
+                        @if(!empty($info->instagram) || !empty($info->spotify)) / @endif
+                        <a href="{{ $info->itunes }}" target="_blank"><strong>iTunes</strong></a>
+                    @endif
+
+                    @if(!empty($info->youtube))
+                        @if(!empty($info->instagram) || !empty($info->spotify) || !empty($info->itunes)) / @endif
+                        <a href="{{ $info->youtube }}" target="_blank"><strong>Youtube</strong></a>
+                    @endif
                 </p>
 
                 @if (!empty($info->email_bisnis))

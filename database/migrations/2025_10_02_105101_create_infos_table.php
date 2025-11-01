@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('email_label')->nullable();
             $table->string('email_booking')->nullable();
             $table->string('nomor_booking')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('spotify')->nullable();
+            $table->string('youtube')->nullable();
+            $table->string('itunes')->nullable();
             $table->timestamps();
         });
     }

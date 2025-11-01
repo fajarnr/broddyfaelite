@@ -43,6 +43,8 @@
                                     <th>Cover</th>
                                     <th>Ciptaan</th>
                                     <th>Link</th>
+                                    <th>Link Spotify</th>
+                                    <th>Link iTunes</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -63,6 +65,8 @@
                                         </td>
                                         <td class="text-nowrap">{{ $item->ciptaan ?? '-' }}</td>
                                         <td class="text-nowrap">{{ $item->link_direct ?? '-' }}</td>
+                                        <td class="text-nowrap">{{ $item->link_spotify ?? '-' }}</td>
+                                        <td class="text-nowrap">{{ $item->link_itunes ?? '-' }}</td>
                                         <td>
                                             <a wire:navigate
                                                href="{{ route('admin.musik.edit', $item) }}"
@@ -79,7 +83,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center text-muted py-4">
+                                        <td colspan="9" class="text-center text-muted py-4">
                                             Belum ada data musik
                                         </td>
                                     </tr>
