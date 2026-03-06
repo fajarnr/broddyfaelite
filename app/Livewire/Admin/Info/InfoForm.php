@@ -69,9 +69,17 @@ class InfoForm extends Component
 
         $this->validate($rules);
 
-        $this->mode === 'create'
-            ? $this->createInfo()
-            : $this->updateInfo();
+        if ($this->mode === 'create') {
+            $this->createInfo();
+
+            // panggil event JS
+            $this->dispatch('info-created');
+        } else {
+            $this->updateInfo();
+
+            // panggil event JS
+            $this->dispatch('info-updated');
+        }
     }
 
     private function createInfo()
@@ -97,7 +105,7 @@ class InfoForm extends Component
 
             $this->resetForm();
 
-             // ✅ kirim event sukses + redirect
+            // ✅ kirim event sukses + redirect
             $this->dispatch('notify', [
                 'type' => 'success',
                 'message' => 'Data Info berhasil disimpan!',

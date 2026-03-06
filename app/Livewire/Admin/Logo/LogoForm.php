@@ -38,8 +38,14 @@ class LogoForm extends Component
 
         if ($this->mode === 'create') {
             $this->createLogo();
+
+            // panggil event JS
+            $this->dispatch('logo-created');
         } else {
             $this->updateLogo();
+
+            // panggil event JS
+            $this->dispatch('logo-updated');
         }
     }
 

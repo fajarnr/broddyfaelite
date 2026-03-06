@@ -56,9 +56,17 @@ class MusikForm extends Component
 
         $this->validate($rules);
 
-        $this->mode === 'create'
-            ? $this->createMusik()
-            : $this->updateMusik();
+        if ($this->mode === 'create') {
+            $this->createMusik();
+
+            // panggil event JS
+            $this->dispatch('musik-created');
+        } else {
+            $this->updateMusik();
+
+            // panggil event JS
+            $this->dispatch('musik-updated');
+        }
     }
 
     private function createMusik()

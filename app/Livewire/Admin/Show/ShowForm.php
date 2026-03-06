@@ -16,8 +16,8 @@ class ShowForm extends Component
     public $tempat = '';
     public $tiket = false; // boolean
     public $deskripsi = '';
-    
-     public $mode = 'create';
+
+    public $mode = 'create';
 
     public function mount($show = null)
     {
@@ -29,7 +29,7 @@ class ShowForm extends Component
             $this->deskripsi    = $show->deskripsi;
             $this->tiket        = (bool) $show->tiket;
             $this->mode         = 'edit';
-        }else {
+        } else {
             // Mode Create
             $this->tanggal = now()->format('Y-m-d');
             $this->tiket   = false;
@@ -40,7 +40,7 @@ class ShowForm extends Component
     public function save()
     {
         $rules = [
-           'name_acara' => 'required|string|max:255',
+            'name_acara' => 'required|string|max:255',
             'tanggal'    => 'required|date',
             'tempat'     => 'required|string|max:255',
             'deskripsi'  => 'required|string|max:1000',
@@ -48,16 +48,24 @@ class ShowForm extends Component
         ];
         $this->validate($rules);
 
-        $this->mode === 'create'
-            ? $this->createShow()
-            : $this->updateShow();
+        if ($this->mode === 'create') {
+            $this->createShow();
+
+            // panggil event JS
+            $this->dispatch('show-created');
+        } else {
+            $this->updateShow();
+
+            // panggil event JS
+            $this->dispatch('show-updated');
+        }
     }
 
     private function createShow()
     {
         try {
             Show::create([
-                 'id'         => Str::uuid(),
+                'id'         => Str::uuid(),
                 'name_acara' => $this->name_acara,
                 'tanggal'    => $this->tanggal,
                 'tempat'     => $this->tempat,

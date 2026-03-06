@@ -59,9 +59,17 @@ class MerchForm extends Component
 
         $this->validate($rules);
 
-        $this->mode === 'create'
-            ? $this->createMerch()
-            : $this->updateMerch();
+        if ($this->mode === 'create') {
+            $this->createMerch();
+
+            // panggil event JS
+            $this->dispatch('merch-created');
+        } else {
+            $this->updateMerch();
+
+            // panggil event JS
+            $this->dispatch('merch-updated');
+        }
     }
 
     private function createMerch()

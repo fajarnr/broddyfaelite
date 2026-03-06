@@ -46,9 +46,11 @@ class FilmForm extends Component
 
         $this->validate($rules, $messages);
 
-        $this->mode === 'create'
-            ? $this->createFilm()
-            : $this->updateFilm();
+        if ($this->mode === 'create') {
+            $this->createFilm();
+        } else {
+            $this->updateFilm();
+        }
     }
 
     private function createFilm()

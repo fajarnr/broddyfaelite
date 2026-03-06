@@ -66,9 +66,17 @@ class CollabForm extends Component
 
         $this->validate($rules);
 
-        $this->mode === 'create'
-            ? $this->createCollab()
-            : $this->updateCollab();
+        if ($this->mode === 'create') {
+            $this->createCollab();
+
+            // panggil event JS
+            $this->dispatch('collab-created');
+        } else {
+            $this->updateCollab();
+
+            // panggil event JS
+            $this->dispatch('collab-updated');
+        }
     }
 
     private function createCollab()

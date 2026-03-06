@@ -53,11 +53,22 @@ class UtamaForm extends Component
 
         $this->validate($rules);
 
-        $this->mode === 'create'
-            ? $this->createUtama()
-            : $this->updateUtama();
+        // $this->mode === 'create'
+        //     ? $this->createUtama()
+        //     : $this->updateUtama();
 
-        return redirect()->route('admin.utama.index');
+        // return redirect()->route('admin.utama.index');
+        if ($this->mode === 'create') {
+            $this->createUtama();
+
+            // panggil event JS
+            $this->dispatch('utama-created');
+        } else {
+            $this->updateUtama();
+
+            // panggil event JS
+            $this->dispatch('utama-updated');
+        }
     }
 
     private function createUtama()
