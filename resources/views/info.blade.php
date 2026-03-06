@@ -7,7 +7,7 @@
         <div class="scroll-content">
             <!-- Menu atas -->
             <div class="top-menu">
-                <div class="section-title">
+                <div class="section-title" style="font-family: 'Jake Bitch Dude', sans-serif; font-size:20px">
                     <a href="#bio" class="active">Biography</a> /
                     <a href="#contact">Contact</a>
                 </div>

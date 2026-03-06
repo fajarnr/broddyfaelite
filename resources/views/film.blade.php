@@ -3,7 +3,7 @@
   
     <div class="scroll-content-film">
       <div class="section-center-film">
-        <h2 class="section-title">Film</h2>
+        <h2 class="section-title" style="font-family: 'Jake Bitch Dude', sans-serif; font-size:20px">Film</h2>
 
         @forelse ($films as $film)
         @php

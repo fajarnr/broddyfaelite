@@ -1,5 +1,21 @@
 <?php
 
+use App\Models\Visitor;
+
+function trackVisitor()
+{
+    if (
+        !str_contains(request()->path(), 'livewire') &&
+        !str_contains(request()->path(), 'admin')
+    ) {
+
+        Visitor::create([
+            'ip' => request()->ip(),
+            'url' => request()->path(),
+        ]);
+    }
+}
+
 use Illuminate\Support\Facades\Route;
 
 // ====== FRONTEND ======
@@ -31,6 +47,7 @@ use App\Livewire\Admin\Utama\{UtamaList, UtamaForm, UtamaEdit};
 // ==============================================
 // ============== PUBLIC ROUTES =================
 // ==============================================
+// Route::get('/', Home::class)->name('home')->middleware('track.visitor');
 Route::get('/', Home::class)->name('home');
 Route::get('/info', Info::class)->name('info');
 Route::get('/collab', Collab::class)->name('collab');

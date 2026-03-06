@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
+    {{-- font --}}
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/conthrax" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/the-dark-jackal" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/jake-bitch-dude" rel="stylesheet">
+
     @livewireStyles
 </head>
 <body>

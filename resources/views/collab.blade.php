@@ -3,7 +3,7 @@
   
     <div class="scroll-content-colab">
       <div class="section-center-colab">
-        <h2 class="section-title">Collaboration</h2>
+        <h2 class="section-title" style="font-family: 'Jake Bitch Dude', sans-serif; font-size:20px">Collaboration</h2>
 
         <div class="collab-container-colab">
             @forelse ($collabs as $collab)

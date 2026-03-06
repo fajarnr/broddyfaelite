@@ -4,148 +4,114 @@ namespace App\Livewire\Admin\Utama;
 
 use App\Models\Utama;
 use Livewire\Component;
-use Livewire\Attributes\Layout;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
+#[Layout('layout.auth')]
 class UtamaForm extends Component
 {
     use WithFileUploads;
 
-    public $foto1, $foto2, $foto3, $foto4, $foto5, $foto6;
-    public $existingFoto1, $existingFoto2, $existingFoto3, $existingFoto4, $existingFoto5, $existingFoto6;
-    public $fotoId;
-    public $mode = 'create';
     public ?Utama $utama = null;
 
-    public function mount(Utama $utama = null): void
+    public $foto1, $foto2, $foto3, $foto4, $foto5, $foto6;
+    public $existingFoto1 = null;
+    public $existingFoto2 = null;
+    public $existingFoto3 = null;
+    public $existingFoto4 = null;
+    public $existingFoto5 = null;
+    public $existingFoto6 = null;
+
+    public $mode = 'create';
+
+    public function mount($utama = null)
     {
-        if ($utama && $utama->exists) {
-            $this->fotoId = $utama->id;
+        if ($utama) {
+            $this->utama = $utama;
 
-            foreach (range(1, 6) as $i) {
-                $this->{'existingFoto' . $i} = $utama->{'foto' . $i};
-            }
-
+            $this->existingFoto1 = $utama->foto1;
+            $this->existingFoto2 = $utama->foto2;
+            $this->existingFoto3 = $utama->foto3;
+            $this->existingFoto4 = $utama->foto4;
+            $this->existingFoto5 = $utama->foto5;
+            $this->existingFoto6 = $utama->foto6;
             $this->mode = 'edit';
-        } else {
-            $this->mode = 'create';
         }
     }
 
-    public function save(): void
+    public function save()
     {
         $rules = [];
-        for ($i = 1; $i <= 6; $i++) {
-            $rules['foto' . $i] = 'nullable|image|mimes:png,jpg,jpeg|max:5120';
+
+        foreach (range(1, 6) as $i) {
+            $rules['foto' . $i] = $this->mode === 'create'
+                ? 'required|image|mimes:jpg,jpeg,png|max:5120'
+                : 'nullable|image|mimes:jpg,jpeg,png|max:5120';
         }
 
         $this->validate($rules);
 
-        if ($this->mode === 'edit') {
-            $this->updateUtama();
-        } else {
-            $this->createUtama();
-        }
+        $this->mode === 'create'
+            ? $this->createUtama()
+            : $this->updateUtama();
+
+        return redirect()->route('admin.utama.index');
     }
 
-    /** CREATE **/
-    private function createUtama(): void
+    private function createUtama()
     {
-        try {
-            $data = [];
+        $data = ['id' => Str::uuid()];
 
-            foreach (range(1, 6) as $i) {
-                $fotoField = 'foto' . $i;
-
-                if ($this->$fotoField) {
-                    $random = rand(10000, 99999);
-                    $filename = "Utama_{$i}_{$random}." . $this->$fotoField->getClientOriginalExtension();
-                    $this->$fotoField->storeAs('img/', $filename, 'public');
-                    $data[$fotoField] = $filename;
-                } else {
-                    $data[$fotoField] = null;
-                }
-            }
-
-            Utama::create($data);
-            $this->resetForm();
-
-            // ✅ Notifikasi sukses & redirect
-            $this->dispatch('notify', [
-                'type' => 'success',
-                'message' => 'Data berhasil disimpan!',
-                'redirect' => route('admin.utama.index'),
-            ]);
-        } catch (\Exception $e) {
-            $this->dispatch('notify', [
-                'type' => 'error',
-                'message' => 'Gagal menyimpan data: ' . $e->getMessage(),
-            ]);
-        }
-    }
-
-    /** UPDATE **/
-    private function updateUtama(): void
-    {
-        try {
-            $foto = Utama::findOrFail($this->fotoId);
-            $data = [];
-
-            foreach (range(1, 6) as $i) {
-                $fotoField = 'foto' . $i;
-                $existingField = 'existingFoto' . $i;
-
-                if ($this->$fotoField && is_object($this->$fotoField)) {
-                    // hapus file lama
-                    if (!empty($this->$existingField) && Storage::disk('public')->exists('img/' . $this->$existingField)) {
-                        Storage::disk('public')->delete('img/' . $this->$existingField);
-                    }
-
-                    // simpan file baru
-                    $random = rand(10000, 99999);
-                    $filename = "Utama_{$i}_{$random}." . $this->$fotoField->getClientOriginalExtension();
-                    $this->$fotoField->storeAs('img/', $filename, 'public');
-                    $data[$fotoField] = $filename;
-                } else {
-                    $data[$fotoField] = $this->$existingField;
-                }
-            }
-
-            $foto->update($data);
-            $this->resetForm();
-
-            // ✅ Notifikasi sukses & redirect
-            $this->dispatch('notify', [
-                'type' => 'success',
-                'message' => 'Data berhasil diperbarui!',
-                'redirect' => route('admin.utama.index'),
-            ]);
-        } catch (\Exception $e) {
-            $this->dispatch('notify', [
-                'type' => 'error',
-                'message' => 'Gagal memperbarui data: ' . $e->getMessage(),
-            ]);
-        }
-    }
-
-    private function resetForm(): void
-    {
         foreach (range(1, 6) as $i) {
-            $this->{'foto' . $i} = null;
-            $this->{'existingFoto' . $i} = null;
+
+            $field = 'foto' . $i;
+
+            $filename = 'Utama_' . $i . '_' . rand(10000, 99999) . '.' .
+                $this->$field->getClientOriginalExtension();
+
+            $this->$field->storeAs('img/', $filename, 'public');
+
+            $data[$field] = $filename;
         }
 
-        $this->fotoId = null;
-        $this->utama = null;
-        $this->mode = 'create';
+        Utama::create($data);
     }
 
-    #[Layout('layout.auth')]
+    private function updateUtama()
+    {
+        $data = [];
+
+        foreach (range(1, 6) as $i) {
+
+            $field = 'foto' . $i;
+            $existing = 'existingFoto' . $i;
+
+            if ($this->$field && is_object($this->$field)) {
+
+                if (
+                    !empty($this->$existing) &&
+                    Storage::disk('public')->exists('img/' . $this->$existing)
+                ) {
+                    Storage::disk('public')->delete('img/' . $this->$existing);
+                }
+
+                $filename = 'Utama_' . $i . '_' . rand(10000, 99999) . '.' .
+                    $this->$field->getClientOriginalExtension();
+
+                $this->$field->storeAs('img/', $filename, 'public');
+                $data[$field] = $filename;
+            } else {
+                $data[$field] = $this->$existing;
+            }
+        }
+
+        $this->utama->update($data);
+    }
+
     public function render()
     {
-        return view('livewire.admin.utama.utama-form', [
-            'mode' => $this->mode,
-        ]);
+        return view('livewire.admin.utama.utama-form');
     }
 }

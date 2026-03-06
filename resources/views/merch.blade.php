@@ -1,5 +1,5 @@
 <div class="container-show-merch py-5">
-    <h2 class="section-title-merch text-center mb-5">Merch</h2>
+    <h2 class="section-title-merch text-center mb-5" style="font-family: 'Jake Bitch Dude', sans-serif; font-size:20px">Merch</h2>
 
     <div class="product-container-merch">
         @forelse ($merchs as $merch)

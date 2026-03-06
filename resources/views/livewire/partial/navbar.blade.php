@@ -22,7 +22,7 @@
                         src="{{ asset('storage/img/' . $logo->logo) }}" 
                         alt="Logo Broddyfae" 
                         class="img-fluid d-block mx-auto"
-                        style="max-height: 300px; width: auto; object-fit: contain;"
+                        style="max-height: 250px; width: auto; object-fit: contain;"
                     >
                 @else
                     <span class="fw-bold">BRODDYFAE<sup>®</sup></span>

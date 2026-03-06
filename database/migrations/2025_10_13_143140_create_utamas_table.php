@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('utamas', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('foto1')->nullable();
             $table->string('foto2')->nullable();
             $table->string('foto3')->nullable();

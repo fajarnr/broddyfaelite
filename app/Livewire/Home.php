@@ -18,7 +18,7 @@ class Home extends Component
     public function render()
     {
         // return view('livewire.home');
-        return view('home', [ 'utamas' => $this->utama]) // pakai Blade biasa
+        return view('home', ['utamas' => $this->utama]) // pakai Blade biasa
             ->layout('layout.app', [
                 'title' => 'Home',
                 'active' => 'home', // <-- set active di sini

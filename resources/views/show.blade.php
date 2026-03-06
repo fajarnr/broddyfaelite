@@ -1,6 +1,6 @@
 <div class="container-show">
     <!-- Menu atas -->
-    <h2 class="section-title">Merch</h2>
+    <h2 class="section-title" style="font-family: 'Jake Bitch Dude', sans-serif; font-size:20px">Show</h2>
     <div class="tour-container">
 
         {{-- <div class="tour-item">
